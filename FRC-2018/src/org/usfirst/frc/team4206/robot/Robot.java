@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4206.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4206.robot.subsystems.LimelightVision;
 import org.usfirst.frc.team4206.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team4206.robot.subsystems.Shifter;
 
@@ -27,10 +28,8 @@ public class Robot extends TimedRobot {
 	public static final DriveTrain drivetrain = new DriveTrain();
 	public static final Shifter shifter = new Shifter();
 	public static final Pneumatics pneumatics = new Pneumatics();
+	public static final LimelightVision limelightvision = new LimelightVision();
 	public static OI oi;
-
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -39,9 +38,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		//m_chooser.addDefault("Default Auto", new ExampleCommand());
-		//chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
 	}
 
 	/**
@@ -72,8 +68,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
 
+		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -82,9 +78,9 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
+		//if (m_autonomousCommand != null) {
+		//Robot.	m_autonomousCommand.start();
+		//}
 	}
 
 	/**
@@ -101,9 +97,9 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
+		//if (m_autonomousCommand != null) {
 			//m_autonomousCommand.cancel();
-		}
+		//}
 	}
 
 	/**
