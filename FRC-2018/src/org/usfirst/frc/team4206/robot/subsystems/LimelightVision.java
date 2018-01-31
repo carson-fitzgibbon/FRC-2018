@@ -16,28 +16,26 @@ public class LimelightVision extends Subsystem {
 	double targetValidity;
 	
     public LimelightVision() {
-    	NetworkTable table = NetworkTable.getTable("limelight");
-    	targetOffsetAngle_Horizontal = table.getNumber("tx", 0);
-    	targetOffsetAngle_Vertical = table.getNumber("ty", 0);
-     	targetArea = table.getNumber("ta", 0);
-    	targetSkew = table.getNumber("ts", 0);
-    	targetValidity = table.getNumber("tv", 0);
     }
 
     public double getTargetOffsetX() {
-    	return targetOffsetAngle_Horizontal;
+    	NetworkTable table = NetworkTable.getTable("limelight");
+    	return table.getNumber("tx", 0);
     }
     
     public double getTargetOffsetY() {
-    	return targetOffsetAngle_Vertical;
+    	NetworkTable table = NetworkTable.getTable("limelight");
+    	return table.getNumber("ty", 0);
     }
     
     public double getTargetArea() {
-    	return targetArea;
+    	NetworkTable table = NetworkTable.getTable("limelight");
+    	return table.getNumber("ta", 0);
     }
     
     public double hasValidTarget() {
-    	return targetValidity;
+    	NetworkTable table = NetworkTable.getTable("limelight");
+    	return table.getNumber("tv", 0);
     }
     
     /**
@@ -46,6 +44,7 @@ public class LimelightVision extends Subsystem {
      * @param mode : true is vision, false is driver cam
      */
     public void setMode(boolean mode) {
+    	NetworkTable table = NetworkTable.getTable("limelight");
     	table.putNumber("camMode", mode ? 0 : 1);
     }
     
@@ -55,10 +54,16 @@ public class LimelightVision extends Subsystem {
      * @param mode : 0 is on, 1 is off, 2 is blinking
      */
     public void setLEDMode(int mode) {
+    	NetworkTable table = NetworkTable.getTable("limelight");
     	table.putNumber("ledMode", mode);
     }
     
     public void initDefaultCommand() {
     }
+
+	public String requestDiagnostic() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 

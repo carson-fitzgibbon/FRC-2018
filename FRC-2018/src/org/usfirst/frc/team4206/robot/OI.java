@@ -34,17 +34,17 @@ public class OI {
 	
 	static Button autoForward = new JoystickButton(autonomousSelect, 0);
 	
-	public static int leftX = 1;
+	public static int leftX = 0;
 	public static int rightX = 4;
-	public static int leftY = 2;
+	public static int leftY = 1;
 	public static int rightY = 5;
-	public static int leftTrigger = 3;
-	public static int rightTrigger = 6;
+	public static int leftTrigger = 2;
+	public static int rightTrigger = 3;
 
 
 	public OI() {
 		RB.whenPressed(new ShiftGear());
 		A.whenPressed(new VisionDrive());
-		A.cancelWhenPressed(new VisionDrive());
+		//A.cancelWhenPressed(new VisionDrive());
 	}	
 }

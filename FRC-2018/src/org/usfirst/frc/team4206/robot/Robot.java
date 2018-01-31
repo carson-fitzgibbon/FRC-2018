@@ -12,9 +12,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team4206.robot.commands.VisionDrive;
 import org.usfirst.frc.team4206.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4206.robot.subsystems.LimelightVision;
-import org.usfirst.frc.team4206.robot.subsystems.Pneumatics;
+import org.usfirst.frc.team4206.robot.subsystems.NavigationSensor;
+import org.usfirst.frc.team4206.robot.subsystems.PDP;
 import org.usfirst.frc.team4206.robot.subsystems.Shifter;
 
 /**
@@ -27,10 +30,14 @@ import org.usfirst.frc.team4206.robot.subsystems.Shifter;
 public class Robot extends TimedRobot {
 	public static final DriveTrain drivetrain = new DriveTrain();
 	public static final Shifter shifter = new Shifter();
-	public static final Pneumatics pneumatics = new Pneumatics();
 	public static final LimelightVision limelightvision = new LimelightVision();
+	public static final NavigationSensor navx = new NavigationSensor();
+	public static final PDP pdp = new PDP();
 	public static OI oi;
 
+	Command autonomousCommand = new VisionDrive();
+	SendableChooser<Command> chooser = new SendableChooser<>();
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -70,17 +77,7 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 
 		
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		//if (m_autonomousCommand != null) {
-		//Robot.	m_autonomousCommand.start();
-		//}
+		autonomousCommand.start();
 	}
 
 	/**

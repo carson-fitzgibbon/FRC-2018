@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ShiftGear extends Command {
 
     public ShiftGear() {
-        requires(Robot.shifter);
+        //requires(Robot.shifter);
     }
 
     // Called just before this Command runs the first time
@@ -19,7 +19,7 @@ public class ShiftGear extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shifter.shift();
+    	//Robot.shifter.shift();
     }
 
     // Make this return true when this Command no longer needs to run execute()
