@@ -24,27 +24,62 @@ public class DriveTrain extends Subsystem {
 	static WPI_TalonSRX rightSlave;
 	static DifferentialDrive diffDrive;
 	
+	final double kF = 0.1097;
+	final double kP = 0.113333;
+	final double kI = 0;
+	final double kD = 0;
+	final int kTO = 100;
+	
 	public DriveTrain() {
 		leftMaster = new WPI_TalonSRX(RobotMap.leftMaster);
-		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 1000);
+		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, kTO);
+		leftMaster.setSensorPhase(true);
 		leftSlave = new WPI_TalonSRX(RobotMap.leftSlave);
 		rightMaster = new WPI_TalonSRX(RobotMap.rightMaster);
-		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 1000);
+		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, kTO);
+		rightMaster.setSensorPhase(true);
 		rightSlave = new WPI_TalonSRX(RobotMap.rightSlave);
 		
-		leftSlave.set(ControlMode.Follower, RobotMap.leftMaster);
-		rightSlave.set(ControlMode.Follower, RobotMap.rightMaster);
+		leftMaster.configNominalOutputForward(0, kTO);
+		leftMaster.configNominalOutputReverse(0, kTO);
+		leftMaster.configPeakOutputForward(1, kTO);
+		leftMaster.configPeakOutputReverse(-1, kTO);
+		leftMaster.config_kF(0, kF, kTO);
+		leftMaster.config_kP(0, kP, kTO);
+		leftMaster.config_kI(0, kI, kTO);
+		leftMaster.config_kD(0, kD, kTO);
+		
+		rightMaster.configNominalOutputForward(0, kTO);
+		rightMaster.configNominalOutputReverse(0, kTO);
+		rightMaster.configPeakOutputForward(1, kTO);
+		rightMaster.configPeakOutputReverse(-1, kTO);
+		rightMaster.config_kF(0, kF, kTO);
+		rightMaster.config_kP(0, kP, kTO);
+		rightMaster.config_kI(0, kI, kTO);
+		rightMaster.config_kD(0, kD, kTO);
 		
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		rightMaster.setNeutralMode(NeutralMode.Brake);
 		leftSlave.setNeutralMode(NeutralMode.Brake);
 		rightSlave.setNeutralMode(NeutralMode.Brake);
 		
+		leftMaster.set(ControlMode.Velocity, 0);
+		rightMaster.set(ControlMode.Velocity, 0);
+		leftSlave.follow(leftMaster);
+		rightSlave.follow(rightMaster);
+		
 		diffDrive = new DifferentialDrive(leftMaster, rightMaster);
 	}
 	
 	public void arcadeDrive(double power, double rotate) {
+		diffDrive.setMaxOutput(1);
 		diffDrive.arcadeDrive(power, rotate);
+	}
+	
+	public void velocityDrive(double power, double rotate) {
+		//Not sure about this part... Is is actually driving the talons in velocity mode? Needs testing
+		diffDrive.setMaxOutput(3415);
+		diffDrive.arcadeDrive(power * 500 * 4096 / 600, rotate * 500 * 4096 / 600);
 	}
 
     public void initDefaultCommand() {
@@ -65,29 +100,32 @@ public class DriveTrain extends Subsystem {
 		rightSlave.set(ControlMode.PercentOutput, 0);
 		
 		System.out.println("Testing left master motor...");
-		leftMaster.set(0.5);
+		leftMaster.set(ControlMode.PercentOutput, 0.5);
 		Timer.delay(2);
 		if (Robot.pdp.portCurrent(RobotMap.leftMasterPWR)==0) report1 += "Not Powered!\n";
 		if (leftMaster.getSelectedSensorVelocity(0) == 0) report1 += "No Motion Detected!\n";
-		leftMaster.set(0);
+		leftMaster.set(ControlMode.PercentOutput, 0);
+		
 		System.out.println("Testing right master motor...");
-		rightMaster.set(0.5);
+		rightMaster.set(ControlMode.PercentOutput, 0.5);
 		Timer.delay(2);
 		if (Robot.pdp.portCurrent(RobotMap.rightMasterPWR)==0) report2 += "Not Powered!\n";
 		if (rightMaster.getSelectedSensorVelocity(0) == 0) report2 += "No Motion Detected!\n";
-		rightMaster.set(0);
+		rightMaster.set(ControlMode.PercentOutput, 0);
+		
 		System.out.println("Testing left slave motor...");
-		leftSlave.set(0.5);
+		leftSlave.set(ControlMode.PercentOutput, 0.5);
 		Timer.delay(2);
 		if (Robot.pdp.portCurrent(RobotMap.leftSlavePWR)==0) report3 += "Not Powered!\n";
 		if (leftMaster.getSelectedSensorVelocity(0) == 0) report3 += "No Motion Detected!\n";
-		leftSlave.set(0);
+		leftSlave.set(ControlMode.PercentOutput, 0);
+		
 		System.out.println("Testing right slave motor...");
-		rightSlave.set(0.5);
+		rightSlave.set(ControlMode.PercentOutput, 0.5);
 		Timer.delay(2);
 		if (Robot.pdp.portCurrent(RobotMap.rightSlavePWR)==0) report4 += "Not Powered!\n";
 		if (rightMaster.getSelectedSensorVelocity(0) == 0) report4 += "No Motion Detected!\n";
-		rightSlave.set(0);
+		rightSlave.set(ControlMode.PercentOutput, 0);
 		
 		
 		
