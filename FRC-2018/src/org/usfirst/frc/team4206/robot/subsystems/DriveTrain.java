@@ -22,7 +22,7 @@ public class DriveTrain extends Subsystem {
 	static WPI_TalonSRX leftSlave;
 	static WPI_TalonSRX rightMaster;
 	static WPI_TalonSRX rightSlave;
-	static DifferentialDrive diffDrive;
+	static VikeDrive vikeDrive;
 	
 	final double kF = 0.1097;
 	final double kP = 0.113333;
@@ -68,18 +68,15 @@ public class DriveTrain extends Subsystem {
 		leftSlave.follow(leftMaster);
 		rightSlave.follow(rightMaster);
 		
-		diffDrive = new DifferentialDrive(leftMaster, rightMaster);
+		vikeDrive = new VikeDrive(leftMaster, rightMaster);
 	}
 	
 	public void arcadeDrive(double power, double rotate) {
-		diffDrive.setMaxOutput(1);
-		diffDrive.arcadeDrive(power, rotate);
+		vikeDrive.arcadeDrive(power, rotate);
 	}
 	
 	public void velocityDrive(double power, double rotate) {
-		//Not sure about this part... Is is actually driving the talons in velocity mode? Needs testing
-		diffDrive.setMaxOutput(3415);
-		diffDrive.arcadeDrive(power * 500 * 4096 / 600, rotate * 500 * 4096 / 600);
+		vikeDrive.arcadeDriveCL(power, rotate);
 	}
 
     public void initDefaultCommand() {

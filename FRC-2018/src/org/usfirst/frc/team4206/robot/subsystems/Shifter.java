@@ -28,6 +28,10 @@ public class Shifter extends Subsystem {
 		loGear = !loGear;
 	}
 	
+	public int getRPMMux() {
+		return 500;
+	}
+	
     public void initDefaultCommand() {
     	
     }
