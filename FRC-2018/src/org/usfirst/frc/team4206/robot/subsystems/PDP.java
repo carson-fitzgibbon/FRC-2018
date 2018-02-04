@@ -11,11 +11,12 @@ public class PDP extends Subsystem {
 	static PowerDistributionPanel _PDP;
 	
 	public PDP() {
-		_PDP = new PowerDistributionPanel();
+		//_PDP = new PowerDistributionPanel(0);
 	}
 	
 	public double portCurrent(int port) {
-		return _PDP.getCurrent(port);
+		//return _PDP.getCurrent(port);
+		return 0;
 	}
 	
     public void initDefaultCommand() {

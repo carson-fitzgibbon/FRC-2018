@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
-//import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -63,7 +62,16 @@ public class NavigationSensor extends Subsystem implements PIDSource {
     }
 
 	public String requestDiagnostic() {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("\n----STARTING AHRS DIAGNOSTIC----\n\n");
+		String report = "";
+		try {
+			if (!_ahrs.isConnected()) System.out.println("AHRS instantiated, but not connected!");
+			else {
+				System.out.println("Yaw: " + _ahrs.getYaw());
+			}
+		} catch (NullPointerException ex) {
+			System.out.println("AHRS instantiation failed!");
+		}
+		return report;
 	}
 }

@@ -2,6 +2,7 @@ package org.usfirst.frc.team4206.robot.subsystems;
 
 import org.usfirst.frc.team4206.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -13,10 +14,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shifter extends Subsystem {
 
 	static DoubleSolenoid shiftSolenoid;
+	static Compressor compressor;
 	static boolean loGear;
 	
 	public Shifter() {
 		shiftSolenoid = new DoubleSolenoid(RobotMap.solenoidForward, RobotMap.solenoidReverse);
+		compressor = new Compressor(RobotMap.compressor);
 		loGear = true;
 	}
 	
@@ -29,11 +32,11 @@ public class Shifter extends Subsystem {
 	}
 	
 	public int getRPMMux() {
-		return 500;
+		if (loGear) return 300;
+		return 1000;
 	}
 	
     public void initDefaultCommand() {
-    	
     }
 
 	public String requestDiagnostic() {

@@ -1,18 +1,16 @@
 package org.usfirst.frc.team4206.robot.commands;
 
-import org.usfirst.frc.team4206.robot.OI;
 import org.usfirst.frc.team4206.robot.Robot;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * This command drives the robot with the driver joystick
+ *
  */
-public class PlayerDrive extends Command {
+public class CubeIn extends Command {
 
-    public PlayerDrive() {
-        requires(Robot.drivetrain);
+    public CubeIn() {
+        requires(Robot.shooterfeeder);
     }
 
     // Called just before this Command runs the first time
@@ -21,20 +19,18 @@ public class PlayerDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.velocityDrive(OI.driver.getRawAxis(OI.leftY), OI.driver.getRawAxis(OI.rightX));
-    	Timer.delay(0.005);
-	}
+    	Robot.shooterfeeder.setIntake(-1);
+    	Robot.shooterfeeder.setAngularVelocity(-100);
+    }
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return !Robot.shooterfeeder.hasCube();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    }
-    
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
+    	Robot.shooterfeeder.setIntake(0);
+    	Robot.shooterfeeder.setAngularVelocity(0);
     }
 }

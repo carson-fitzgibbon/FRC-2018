@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4206.robot.commands.VisionDrive;
 import org.usfirst.frc.team4206.robot.subsystems.DriveTrain;
@@ -19,6 +18,7 @@ import org.usfirst.frc.team4206.robot.subsystems.LimelightVision;
 import org.usfirst.frc.team4206.robot.subsystems.NavigationSensor;
 import org.usfirst.frc.team4206.robot.subsystems.PDP;
 import org.usfirst.frc.team4206.robot.subsystems.Shifter;
+import org.usfirst.frc.team4206.robot.subsystems.ShooterFeeder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
 	public static final LimelightVision limelightvision = new LimelightVision();
 	public static final NavigationSensor navx = new NavigationSensor();
 	public static final PDP pdp = new PDP();
+	public static final ShooterFeeder shooterfeeder = new ShooterFeeder();
 	public static OI oi;
 
 	Command autonomousCommand = new VisionDrive();

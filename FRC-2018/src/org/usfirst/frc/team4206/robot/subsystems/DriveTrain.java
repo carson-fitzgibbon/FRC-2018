@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * This class controls the robot's drive train
@@ -24,39 +23,40 @@ public class DriveTrain extends Subsystem {
 	static WPI_TalonSRX rightSlave;
 	static VikeDrive vikeDrive;
 	
-	final double kF = 0.1097;
-	final double kP = 0.113333;
+	final double kF = 0.1097; //0.1097
+	final double kP = 0.113333; //0.113333
 	final double kI = 0;
 	final double kD = 0;
-	final int kTO = 100;
 	
 	public DriveTrain() {
 		leftMaster = new WPI_TalonSRX(RobotMap.leftMaster);
-		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, kTO);
+		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTO);
 		leftMaster.setSensorPhase(true);
 		leftSlave = new WPI_TalonSRX(RobotMap.leftSlave);
 		rightMaster = new WPI_TalonSRX(RobotMap.rightMaster);
-		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, kTO);
+		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTO);
 		rightMaster.setSensorPhase(true);
 		rightSlave = new WPI_TalonSRX(RobotMap.rightSlave);
 		
-		leftMaster.configNominalOutputForward(0, kTO);
-		leftMaster.configNominalOutputReverse(0, kTO);
-		leftMaster.configPeakOutputForward(1, kTO);
-		leftMaster.configPeakOutputReverse(-1, kTO);
-		leftMaster.config_kF(0, kF, kTO);
-		leftMaster.config_kP(0, kP, kTO);
-		leftMaster.config_kI(0, kI, kTO);
-		leftMaster.config_kD(0, kD, kTO);
+		leftMaster.configNominalOutputForward(0, RobotMap.kTO);
+		leftMaster.configNominalOutputReverse(0, RobotMap.kTO);
+		leftMaster.configPeakOutputForward(1, RobotMap.kTO);
+		leftMaster.configPeakOutputReverse(-1, RobotMap.kTO);
+		leftMaster.config_kF(0, kF, RobotMap.kTO);
+		leftMaster.config_kP(0, kP, RobotMap.kTO);
+		leftMaster.config_kI(0, kI, RobotMap.kTO);
+		leftMaster.config_kD(0, kD, RobotMap.kTO);
+		leftMaster.configClosedloopRamp(0.45, RobotMap.kTO);
 		
-		rightMaster.configNominalOutputForward(0, kTO);
-		rightMaster.configNominalOutputReverse(0, kTO);
-		rightMaster.configPeakOutputForward(1, kTO);
-		rightMaster.configPeakOutputReverse(-1, kTO);
-		rightMaster.config_kF(0, kF, kTO);
-		rightMaster.config_kP(0, kP, kTO);
-		rightMaster.config_kI(0, kI, kTO);
-		rightMaster.config_kD(0, kD, kTO);
+		rightMaster.configNominalOutputForward(0, RobotMap.kTO);
+		rightMaster.configNominalOutputReverse(0, RobotMap.kTO);
+		rightMaster.configPeakOutputForward(1, RobotMap.kTO);
+		rightMaster.configPeakOutputReverse(-1, RobotMap.kTO);
+		rightMaster.config_kF(0, kF, RobotMap.kTO);
+		rightMaster.config_kP(0, kP, RobotMap.kTO);
+		rightMaster.config_kI(0, kI, RobotMap.kTO);
+		rightMaster.config_kD(0, kD, RobotMap.kTO);
+		rightMaster.configClosedloopRamp(0.45, RobotMap.kTO);
 		
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		rightMaster.setNeutralMode(NeutralMode.Brake);
@@ -123,8 +123,6 @@ public class DriveTrain extends Subsystem {
 		if (Robot.pdp.portCurrent(RobotMap.rightSlavePWR)==0) report4 += "Not Powered!\n";
 		if (rightMaster.getSelectedSensorVelocity(0) == 0) report4 += "No Motion Detected!\n";
 		rightSlave.set(ControlMode.PercentOutput, 0);
-		
-		
 		
 		return report1+report2+report3+report4;
 	}

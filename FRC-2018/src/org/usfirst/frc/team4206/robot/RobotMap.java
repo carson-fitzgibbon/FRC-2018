@@ -20,14 +20,27 @@ public class RobotMap {
 	public static final int leftSlave = 4;
 	public static final int rightMaster = 3;
 	public static final int rightSlave = 2;
+	public static final int elevator = 5;
+	public static final int shooterLeft = 6;
+	public static final int shooterRight = 7;
+	public static final int grabber = 8;
+	public static final int rearIntakeLeft = 9;
+	public static final int rearIntakeRight = 10;
 	
 	public static final int leftMasterPWR = 0;
 	public static final int leftSlavePWR = 1;
 	public static final int rightMasterPWR = 2;
 	public static final int rightSlavePWR = 3;
+	public static final int elevatorPWR = 12;
+	public static final int shooterLeftPWR = 13;
+	public static final int shooterRightPWR = 14;
+	public static final int grabberPWR = 4;
+	public static final int rearIntakeLeftPWR = 5;
+	public static final int rearIntakeRightPWR = 6;
 	
 	public static final int solenoidForward = 0;
 	public static final int solenoidReverse = 1;
-	public static final int compressor = 6;
+	public static final int compressor = 0;
 	
+	public static final int kTO = 100;
 }

@@ -1,11 +1,13 @@
 package org.usfirst.frc.team4206.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * This class is the subsystem controlling the Limelight vision processor and camera
  */
+@SuppressWarnings("deprecation")
 public class LimelightVision extends Subsystem {
 
 	NetworkTable table;
@@ -62,8 +64,13 @@ public class LimelightVision extends Subsystem {
     }
 
 	public String requestDiagnostic() {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("\n----STARTING LIMELIGHT DIAGNOSTIC----\n\n");
+		System.out.println("Limelight will blink LEDs for 3 seconds, use the web interface to confirm functionality.\n");
+		setLEDMode(2);
+		Timer.delay(3);
+		setLEDMode(0);
+		
+		return "";
 	}
 }
 
