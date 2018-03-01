@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4206.robot.commands;
 
 import org.usfirst.frc.team4206.robot.Robot;
+import org.usfirst.frc.team4206.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -42,7 +43,8 @@ public class LeftAuto extends Command {
     		// do switch
     		this.setTimeout(6);
     		if (System.currentTimeMillis() < startTime + 2000) {
-        		Robot.drivetrain.positionDrive((((2*(4+3)*Math.PI)/4)/(2*Math.PI*0.25))*4096, (((2*4*Math.PI)/4)/(2*Math.PI*0.25))*4096);
+    			Robot.drivetrain.positionDrive((((2*(RobotMap.switchToWallFt+RobotMap.robotWidthFt)*Math.PI)/4)/(2*Math.PI*RobotMap.wheelRadiusFt))*4096,
+    										   (((2*RobotMap.switchToWallFt*Math.PI)/4)/(2*Math.PI*RobotMap.wheelRadiusFt))*4096);
     			//Robot.drivetrain.velocityDrive(.5, (50-Robot.navx.getGyro())/50); // try this in position mode
     		} else {
     			Robot.drivetrain.setAngle(90);

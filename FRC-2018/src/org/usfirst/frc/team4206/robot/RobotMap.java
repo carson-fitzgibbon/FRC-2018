@@ -44,6 +44,10 @@ public class RobotMap {
 	public int solenoidForward;
 	public int solenoidReverse;
 	public int compressor;
+	
+	public static final double switchToWallFt = 4;
+	public static final double robotWidthFt = 3;
+	public static final double wheelRadiusFt = 0.25;
 	// We use 1 as the starting CAN ID because 0 is the default and new devices
 	// will conflict with an existing '0' device
 	public RobotMap() {
