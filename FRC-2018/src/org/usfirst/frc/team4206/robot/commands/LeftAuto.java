@@ -33,6 +33,7 @@ public class LeftAuto extends Command {
     	if (plateConfig.charAt(1) == 'L') {
     		// do scale
     		complete = Robot.drivetrain.positionDrive(4096 * 6, 4096 * 6);
+
     		if (complete) {
     			Robot.drivetrain.setAngle(90);
     			new RunShooter();
@@ -41,9 +42,10 @@ public class LeftAuto extends Command {
     		// do switch
     		this.setTimeout(6);
     		if (System.currentTimeMillis() < startTime + 2000) {
-    			Robot.drivetrain.velocityDrive(.5, (50-Robot.navx.getGyro())/50); // try this in position mode
+        		Robot.drivetrain.positionDrive((((2*(4+3)*Math.PI)/4)/(2*Math.PI*0.25))*4096, (((2*4*Math.PI)/4)/(2*Math.PI*0.25))*4096);
+    			//Robot.drivetrain.velocityDrive(.5, (50-Robot.navx.getGyro())/50); // try this in position mode
     		} else {
-    			Robot.drivetrain.setAngle(50);
+    			Robot.drivetrain.setAngle(90);
     			Robot.shooterfeeder.setAngularVelocity(0.5, 0.5);
     	    	Robot.shooterfeeder.setIntake(1);
     		}
