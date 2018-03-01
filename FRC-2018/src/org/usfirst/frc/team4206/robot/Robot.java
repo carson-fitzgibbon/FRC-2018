@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
+import org.usfirst.frc.team4206.robot.commands.CenterAuto;
+import org.usfirst.frc.team4206.robot.commands.LeftAuto;
+import org.usfirst.frc.team4206.robot.commands.RightAuto;
+import org.usfirst.frc.team4206.robot.commands.TimedDrive;
 import org.usfirst.frc.team4206.robot.commands.VisionDrive;
 import org.usfirst.frc.team4206.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4206.robot.subsystems.LimelightVision;
@@ -28,15 +32,17 @@ import org.usfirst.frc.team4206.robot.subsystems.ShooterFeeder;
  * project.
  */
 public class Robot extends TimedRobot {
+	public static RobotMap map = new RobotMap();
 	public static final DriveTrain drivetrain = new DriveTrain();
-	public static final Shifter shifter = new Shifter();
-	public static final LimelightVision limelightvision = new LimelightVision();
+	//public static final Shifter shifter = new Shifter();
+	public static LimelightVision limelightvision;// = new LimelightVision();
 	public static final NavigationSensor navx = new NavigationSensor();
-	public static final PDP pdp = new PDP();
+	//public static final PDP pdp = new PDP();
 	public static final ShooterFeeder shooterfeeder = new ShooterFeeder();
 	public static OI oi;
 
-	Command autonomousCommand = new VisionDrive();
+	Command autonomousCommand = new TimedDrive(3, .5); // default autonomous will cross the baseline
+	
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
 	/**
@@ -46,6 +52,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
+		chooser.addDefault("Baseline", new TimedDrive(3, 0.5));
+		chooser.addObject("Left", new LeftAuto());
+		chooser.addObject("Right", new RightAuto());
+		chooser.addObject("Center", new CenterAuto());
 	}
 
 	/**
@@ -76,8 +86,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-
-		
+		navx.zeroGyro();
+		autonomousCommand = chooser.getSelected();
 		autonomousCommand.start();
 	}
 
@@ -91,13 +101,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		//if (m_autonomousCommand != null) {
-			//m_autonomousCommand.cancel();
-		//}
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
+		}
 	}
 
 	/**
@@ -106,13 +112,5 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-	}
-
-	/**
-	 * This function is called periodically during test mode.
-	 */
-	@Override
-	public void testPeriodic() {
-		
 	}
 }

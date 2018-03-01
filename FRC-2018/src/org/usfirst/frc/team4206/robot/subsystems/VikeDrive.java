@@ -32,48 +32,11 @@ public class VikeDrive extends DifferentialDrive {
 	 * @param x Target percentage of velocity in rotation
 	 */
 	public void arcadeDriveCL(double y, double x) {
-		/*
-		final double xTargetVel = -limit(x) * Robot.shifter.getRPMMux() * 4096 / 600;
-		final double yTargetVel = -limit(y) * Robot.shifter.getRPMMux() * 4096 / 600;
-	    final double maxInput = Math.copySign(Math.max(Math.abs(yTargetVel), Math.abs(xTargetVel)), -yTargetVel);
-		
-		if (yTargetVel >= 0) {
-		    if (xTargetVel >= 0) {
-		    	//_leftMotor.set(ControlMode.Velocity, yTargetVel);
-		    	_leftMotor.set(ControlMode.Velocity, maxInput);
-		    	_rightMotor.set(ControlMode.Velocity, yTargetVel - xTargetVel);
-		    	System.out.println(yTargetVel - xTargetVel);
-		    	//System.out.println("L: " + (maxInput - _leftMotor.getSelectedSensorVelocity(0)) + ", R: " + (yTargetVel - xTargetVel - _rightMotor.getSelectedSensorVelocity(0)));
-		    } else {
-		    	_leftMotor.set(ControlMode.Velocity, yTargetVel + xTargetVel);
-		    	_rightMotor.set(ControlMode.Velocity, maxInput);
-		    	//System.out.println("L: " + (yTargetVel + xTargetVel - _leftMotor.getSelectedSensorVelocity(0)) + ", R: " + (maxInput - _rightMotor.getSelectedSensorVelocity(0)));
-
-		    }
-		} else {
-		    if (xTargetVel >= 0) {
-		    	_leftMotor.set(ControlMode.Velocity, maxInput);
-		    	_rightMotor.set(ControlMode.Velocity, yTargetVel + xTargetVel);
-		    	//System.out.println("L: " + (maxInput - _leftMotor.getSelectedSensorVelocity(0)) + ", R: " + (yTargetVel + xTargetVel - _rightMotor.getSelectedSensorVelocity(0)));
-
-		    } else {
-		    	_leftMotor.set(ControlMode.Velocity, yTargetVel - xTargetVel);
-		    	_rightMotor.set(ControlMode.Velocity, maxInput);
-		    	//System.out.println("L: " + (yTargetVel - xTargetVel - _leftMotor.getSelectedSensorVelocity(0)) + ", R: " + (maxInput - _rightMotor.getSelectedSensorVelocity(0)));
-
-		    }
-		}
-		
-	    m_safetyHelper.feed();
-	    */
-		final double maxVal = 4096 * Robot.shifter.getRPMMux() / 600;
-		//final double maxVal = 1;
+		final double maxVal = 4096 * 900 / 600;
 	    y = applyDeadband(y, 0.02);
-	    //y = Math.copySign(y * y, y);
 	    y = limit(y);
 	    
 	    x = applyDeadband(x, 0.02);
-	    //x = Math.copySign(x * x, x);
 	    x = limit(x);
 
 	    // Square the inputs (while preserving the sign) to increase fine control
@@ -104,9 +67,7 @@ public class VikeDrive extends DifferentialDrive {
 
 	    _leftMotor.set(ControlMode.Velocity, limit(leftMotorOutput) * maxVal);
 	    _rightMotor.set(ControlMode.Velocity, -limit(rightMotorOutput) * maxVal);
-	    
-	    System.out.println(_leftMotor.getClosedLoopError(0) + ", " + _rightMotor.getClosedLoopError(0));
-	    
+	    	    
 	    m_safetyHelper.feed();
 	}
 

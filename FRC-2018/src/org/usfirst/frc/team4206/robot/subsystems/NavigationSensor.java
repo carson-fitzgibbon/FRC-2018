@@ -60,18 +60,4 @@ public class NavigationSensor extends Subsystem implements PIDSource {
     public void setPIDSourceType(PIDSourceType type) {
     	_ahrs.setPIDSourceType(type);
     }
-
-	public String requestDiagnostic() {
-		System.out.println("\n----STARTING AHRS DIAGNOSTIC----\n\n");
-		String report = "";
-		try {
-			if (!_ahrs.isConnected()) System.out.println("AHRS instantiated, but not connected!");
-			else {
-				System.out.println("Yaw: " + _ahrs.getYaw());
-			}
-		} catch (NullPointerException ex) {
-			System.out.println("AHRS instantiation failed!");
-		}
-		return report;
-	}
 }

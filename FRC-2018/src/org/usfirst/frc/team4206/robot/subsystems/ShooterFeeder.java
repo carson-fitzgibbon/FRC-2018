@@ -2,7 +2,10 @@ package org.usfirst.frc.team4206.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import org.usfirst.frc.team4206.robot.RobotMap;
+import org.usfirst.frc.team4206.robot.Robot;
+import org.usfirst.frc.team4206.robot.commands.IntakeElevator;
+import org.usfirst.frc.team4206.robot.commands.RunElevator;
+import org.usfirst.frc.team4206.robot.commands.RunIntake;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -11,98 +14,93 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * This subsystem is for the robot's shooter-feeder mechanism
  */
 public class ShooterFeeder extends Subsystem {
 
-	AnalogPotentiometer angleSensor;
-	DigitalInput cubeSwitch;
 	DigitalInput grabberSqueezed;
 	DigitalInput grabberStretched;
 	
-	WPI_TalonSRX elevator;
+	WPI_TalonSRX elevatorMaster;
+	WPI_TalonSRX elevatorSlave;
 	WPI_TalonSRX shooterLeft;
 	WPI_TalonSRX shooterRight;
-	WPI_TalonSRX grabber;
+	public WPI_TalonSRX grabber;
 	WPI_TalonSRX rearIntakeLeft;
 	WPI_TalonSRX rearIntakeRight;
-
-	final double kP_elevator = 1 / 90;
-	final double degreePerVolt = 360 / 0.5;
-	private double angleSetPoint =  0;
-	
-	final double grabberOpen = 0;
-	final double grabberClose = 0;
 	
 	public ShooterFeeder() {
-		angleSensor = new AnalogPotentiometer(0);
-		cubeSwitch = new DigitalInput(0);
+		//angleSensor = new AnalogPotentiometer(0);
+		//cubeSwitch = new DigitalInput(0);
 		
-		elevator = new WPI_TalonSRX(RobotMap.elevator);
-			elevator.setNeutralMode(NeutralMode.Brake);
-		shooterLeft = new WPI_TalonSRX(RobotMap.shooterLeft);
+		elevatorMaster = new WPI_TalonSRX(Robot.map.elevatorMaster);
+			elevatorMaster.setNeutralMode(NeutralMode.Brake);
+		elevatorSlave = new WPI_TalonSRX(Robot.map.elevatorSlave);
+			elevatorSlave.setNeutralMode(NeutralMode.Brake);
+			elevatorSlave.follow(elevatorMaster);
+		shooterLeft = new WPI_TalonSRX(Robot.map.shooterLeft);
 			shooterLeft.setNeutralMode(NeutralMode.Coast);
-			shooterLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTO);
-		shooterRight = new WPI_TalonSRX(RobotMap.shooterRight);
+			shooterLeft.setInverted(true);
+			//shooterLeft.configOpenloopRamp(0.5, 0);
+			//shooterLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
+		shooterRight = new WPI_TalonSRX(Robot.map.shooterRight);
 			shooterRight.setNeutralMode(NeutralMode.Coast);
-			shooterRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTO);
-			shooterRight.follow(shooterLeft); // Let's give this a try
-			shooterRight.setInverted(true);
-		grabber = new WPI_TalonSRX(RobotMap.grabber);
-			grabber.setNeutralMode(NeutralMode.Brake);
-			grabber.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTO);
-		rearIntakeLeft = new WPI_TalonSRX(RobotMap.rearIntakeLeft);
-			rearIntakeLeft.setNeutralMode(NeutralMode.Brake);
-		rearIntakeRight = new WPI_TalonSRX(RobotMap.rearIntakeRight);
-			rearIntakeRight.setNeutralMode(NeutralMode.Brake);
-			rearIntakeRight.follow(rearIntakeLeft);
-			rearIntakeRight.setInverted(true);
+			//shooterRight.configOpenloopRamp(0.5, 0);
+			//shooterRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
+			//shooterRight.follow(shooterLeft); // Let's give this a try
+		grabber = new WPI_TalonSRX(Robot.map.grabber);
+			grabber.setNeutralMode(NeutralMode.Coast);
+			//grabber.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
+		rearIntakeLeft = new WPI_TalonSRX(Robot.map.rearIntakeLeft);
+			rearIntakeLeft.setNeutralMode(NeutralMode.Coast);
+			rearIntakeLeft.setInverted(true);
+		rearIntakeRight = new WPI_TalonSRX(Robot.map.rearIntakeRight);
+			rearIntakeRight.setNeutralMode(NeutralMode.Coast);
+			
 	}
-	
-    public void setAngle(double angle) {
-    	angleSetPoint = angle - (degreePerVolt * angleSensor.get());
-    	elevator.set(ControlMode.PercentOutput, kP_elevator * (angle - (degreePerVolt * angleSensor.get())));
+
+    public void elevate(double power) {
+    	/*
+    	if (isUp()) closeLatch();
+    	if (power < 0) {
+    		openLatch();
+    		if (isDown()) return;
+    	} else if (power > 0 & isUp()) {
+    		return;
+    	}
+    	*/
+    	elevatorMaster.set(power);
     }
     
-    public boolean angleOnTarget() {
-    	return getAngle() < angleSetPoint + 1 & getAngle() > angleSetPoint - 1;
+    public void controlGrabber(double speed) {
+    	//grabber.set(ControlMode.Position, grabberOpen);
+    	System.out.println(speed);
+    	grabber.set(speed);
     }
     
-    private double getAngle() {
-    	return degreePerVolt * angleSensor.get();
-    }
-    
-    public void closeGrabber() {
-    	grabber.set(ControlMode.Position, grabberClose);
-    }
-    
-    public void openGrabber() {
-    	grabber.set(ControlMode.Position, grabberOpen);
-    }
-    
-    public void setAngularVelocity(double omega) {
-    	double encOmega = omega * 4096 / 600;
-    	shooterLeft.set(ControlMode.Velocity, encOmega);
-    	//shooterRight.set(ControlMode.Velocity, encOmega);
+    public void setAngularVelocity(double left, double right) {
+    	System.out.println(left);
+
+    	shooterLeft.set(left);
+    	shooterRight.set(right);
     }
 
     public void setIntake(double power) {
     	rearIntakeLeft.set(ControlMode.PercentOutput, power);
+    	rearIntakeRight.set(ControlMode.PercentOutput, power);
     }
-    
-    public boolean hasCube() {
-    	return cubeSwitch.get();
-    }
-    
+
     public boolean grabberTripped() {
-    	return grabberSqueezed.get() | grabberStretched.get();
+    	return false;
+    	//return grabberSqueezed.get() | grabberStretched.get();
     }
     
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new RunElevator());
     }
 }
 

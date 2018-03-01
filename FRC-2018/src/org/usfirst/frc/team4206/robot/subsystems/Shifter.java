@@ -18,16 +18,16 @@ public class Shifter extends Subsystem {
 	static boolean loGear;
 	
 	public Shifter() {
-		shiftSolenoid = new DoubleSolenoid(RobotMap.solenoidForward, RobotMap.solenoidReverse);
-		compressor = new Compressor(RobotMap.compressor);
+		//shiftSolenoid = new DoubleSolenoid(RobotMap.solenoidForward, RobotMap.solenoidReverse);
+		//compressor = new Compressor(RobotMap.compressor);
 		loGear = true;
 	}
 	
 	public void shift() {
-		if (loGear)shiftSolenoid.set(DoubleSolenoid.Value.kForward); 
-		else shiftSolenoid.set(DoubleSolenoid.Value.kReverse);
+		//if (loGear)shiftSolenoid.set(DoubleSolenoid.Value.kForward); 
+		//else shiftSolenoid.set(DoubleSolenoid.Value.kReverse);
 		Timer.delay(0.005);
-		shiftSolenoid.set(DoubleSolenoid.Value.kOff);
+		//shiftSolenoid.set(DoubleSolenoid.Value.kOff);
 		loGear = !loGear;
 	}
 	

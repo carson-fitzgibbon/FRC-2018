@@ -15,7 +15,8 @@ public class TimedDrive extends Command {
 	
     public TimedDrive(double length, double power) {
         requires(Robot.drivetrain);
-        duration = length;
+        requires(Robot.navx);
+        this.setTimeout(length);
         pwr = power;
     }
 
@@ -27,24 +28,18 @@ public class TimedDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.arcadeDrive(pwr, 0);
+    	Robot.drivetrain.velocityDrive(pwr, -Robot.navx.getGyro()/90);
     	Timer.delay(0.005);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if (System.currentTimeMillis() >= time) return true;
+        if (this.isTimedOut()) return true;
         return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.arcadeDrive(0, 0);
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
     	Robot.drivetrain.arcadeDrive(0, 0);
     }
 }

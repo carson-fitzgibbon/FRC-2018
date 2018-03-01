@@ -14,33 +14,93 @@ package org.usfirst.frc.team4206.robot;
  * floating around.
  */
 public class RobotMap {
+	private final boolean isPractice = true;
+	public final int kTO = 100;
+	
+	public int leftMaster;
+	public int leftSlave;
+	public int rightMaster;
+	public int rightSlave;
+	public int elevatorMaster;
+	public int elevatorSlave;
+	public int shooterLeft;
+	public int shooterRight;
+	public int grabber;
+	public int rearIntakeLeft;
+	public int rearIntakeRight;
+	
+	public int leftMasterPWR;
+	public int leftSlavePWR;
+	public int rightMasterPWR;
+	public int rightSlavePWR;
+	public int elevatorMasterPWR;
+	public int elevatorSlavePWR;
+	public int shooterLeftPWR;
+	public int shooterRightPWR;
+	public int grabberPWR;
+	public int rearIntakeLeftPWR;
+	public int rearIntakeRightPWR;
+	
+	public int solenoidForward;
+	public int solenoidReverse;
+	public int compressor;
 	// We use 1 as the starting CAN ID because 0 is the default and new devices
 	// will conflict with an existing '0' device
-	public static final int leftMaster = 1;
-	public static final int leftSlave = 4;
-	public static final int rightMaster = 3;
-	public static final int rightSlave = 2;
-	public static final int elevator = 5;
-	public static final int shooterLeft = 6;
-	public static final int shooterRight = 7;
-	public static final int grabber = 8;
-	public static final int rearIntakeLeft = 9;
-	public static final int rearIntakeRight = 10;
-	
-	public static final int leftMasterPWR = 0;
-	public static final int leftSlavePWR = 1;
-	public static final int rightMasterPWR = 2;
-	public static final int rightSlavePWR = 3;
-	public static final int elevatorPWR = 12;
-	public static final int shooterLeftPWR = 13;
-	public static final int shooterRightPWR = 14;
-	public static final int grabberPWR = 4;
-	public static final int rearIntakeLeftPWR = 5;
-	public static final int rearIntakeRightPWR = 6;
-	
-	public static final int solenoidForward = 0;
-	public static final int solenoidReverse = 1;
-	public static final int compressor = 0;
-	
-	public static final int kTO = 100;
+	public RobotMap() {
+		if (isPractice) {
+			leftMaster = 1;
+			leftSlave = 4;
+			rightMaster = 3;
+			rightSlave = 2;
+			elevatorMaster = 5;
+			elevatorSlave = 11;
+			shooterLeft = 6;
+			shooterRight = 7;
+			grabber = 8;
+			rearIntakeLeft = 9;
+			rearIntakeRight = 10;
+			
+			leftMasterPWR = 0;
+			leftSlavePWR = 1;
+			rightMasterPWR = 2;
+			rightSlavePWR = 3;
+			elevatorMasterPWR = 12;
+			shooterLeftPWR = 13;
+			shooterRightPWR = 14;
+			grabberPWR = 4;
+			rearIntakeLeftPWR = 5;
+			rearIntakeRightPWR = 6;
+			
+			solenoidForward = 0;
+			solenoidReverse = 1;
+			compressor = 0;
+		} else {
+			leftMaster = 1;
+			leftSlave = 4;
+			rightMaster = 3;
+			rightSlave = 2;
+			elevatorMaster = 5;
+			elevatorSlave = 11;
+			shooterLeft = 6;
+			shooterRight = 7;
+			grabber = 8;
+			rearIntakeLeft = 9;
+			rearIntakeRight = 10;
+			
+			leftMasterPWR = 0;
+			leftSlavePWR = 1;
+			rightMasterPWR = 2;
+			rightSlavePWR = 3;
+			elevatorMasterPWR = 12;
+			shooterLeftPWR = 13;
+			shooterRightPWR = 14;
+			grabberPWR = 4;
+			rearIntakeLeftPWR = 5;
+			rearIntakeRightPWR = 6;
+			
+			solenoidForward = 0;
+			solenoidReverse = 1;
+			compressor = 0;
+		}
+	}
 }

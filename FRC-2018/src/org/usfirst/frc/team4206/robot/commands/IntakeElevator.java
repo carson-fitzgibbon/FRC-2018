@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class ShootSwitch extends CommandGroup {
+public class IntakeElevator extends CommandGroup {
 
-    public ShootSwitch() {
+    public IntakeElevator() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -26,10 +26,12 @@ public class ShootSwitch extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	
     	requires(Robot.shooterfeeder);
-    	addParallel(new ElevatorSwitch());
-    	addSequential(new OpenGrabber());
-    	addSequential(new ShootCube());
-    	addSequential(new CloseGrabber());
+    	
+    	addSequential(new RunIntake(
+        		Robot.oi.operator.getRawAxis(Robot.oi.leftY), 
+        		Robot.oi.operator.getRawAxis(Robot.oi.rightY)));
+    	addSequential(new RunElevator());
     }
 }

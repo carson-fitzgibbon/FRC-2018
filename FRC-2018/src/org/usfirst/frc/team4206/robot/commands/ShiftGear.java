@@ -10,16 +10,17 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ShiftGear extends Command {
 
     public ShiftGear() {
-        requires(Robot.shifter);
+        //requires(Robot.shifter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println(Robot.drivetrain.getVelocity());
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shifter.shift();
+    	//if (Robot.drivetrain.getVelocity() < 1000) Robot.shifter.shift();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -29,10 +30,5 @@ public class ShiftGear extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
     }
 }

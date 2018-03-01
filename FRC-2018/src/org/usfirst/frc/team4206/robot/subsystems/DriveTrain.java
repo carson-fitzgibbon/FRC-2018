@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4206.robot.subsystems;
 
 import org.usfirst.frc.team4206.robot.Robot;
-import org.usfirst.frc.team4206.robot.RobotMap;
 import org.usfirst.frc.team4206.robot.commands.PlayerDrive;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -29,34 +28,34 @@ public class DriveTrain extends Subsystem {
 	final double kD = 0;
 	
 	public DriveTrain() {
-		leftMaster = new WPI_TalonSRX(RobotMap.leftMaster);
-		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTO);
+		leftMaster = new WPI_TalonSRX(Robot.map.leftMaster);
+		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
 		leftMaster.setSensorPhase(true);
-		leftSlave = new WPI_TalonSRX(RobotMap.leftSlave);
-		rightMaster = new WPI_TalonSRX(RobotMap.rightMaster);
-		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, RobotMap.kTO);
+		leftSlave = new WPI_TalonSRX(Robot.map.leftSlave);
+		rightMaster = new WPI_TalonSRX(Robot.map.rightMaster);
+		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
 		rightMaster.setSensorPhase(true);
-		rightSlave = new WPI_TalonSRX(RobotMap.rightSlave);
+		rightSlave = new WPI_TalonSRX(Robot.map.rightSlave);
 		
-		leftMaster.configNominalOutputForward(0, RobotMap.kTO);
-		leftMaster.configNominalOutputReverse(0, RobotMap.kTO);
-		leftMaster.configPeakOutputForward(1, RobotMap.kTO);
-		leftMaster.configPeakOutputReverse(-1, RobotMap.kTO);
-		leftMaster.config_kF(0, kF, RobotMap.kTO);
-		leftMaster.config_kP(0, kP, RobotMap.kTO);
-		leftMaster.config_kI(0, kI, RobotMap.kTO);
-		leftMaster.config_kD(0, kD, RobotMap.kTO);
-		leftMaster.configClosedloopRamp(0.45, RobotMap.kTO);
+		leftMaster.configNominalOutputForward(0, Robot.map.kTO);
+		leftMaster.configNominalOutputReverse(0, Robot.map.kTO);
+		leftMaster.configPeakOutputForward(1, Robot.map.kTO);
+		leftMaster.configPeakOutputReverse(-1, Robot.map.kTO);
+		leftMaster.config_kF(0, kF, Robot.map.kTO);
+		leftMaster.config_kP(0, kP, Robot.map.kTO);
+		leftMaster.config_kI(0, kI, Robot.map.kTO);
+		leftMaster.config_kD(0, kD, Robot.map.kTO);
+		leftMaster.configClosedloopRamp(0.15, Robot.map.kTO);
 		
-		rightMaster.configNominalOutputForward(0, RobotMap.kTO);
-		rightMaster.configNominalOutputReverse(0, RobotMap.kTO);
-		rightMaster.configPeakOutputForward(1, RobotMap.kTO);
-		rightMaster.configPeakOutputReverse(-1, RobotMap.kTO);
-		rightMaster.config_kF(0, kF, RobotMap.kTO);
-		rightMaster.config_kP(0, kP, RobotMap.kTO);
-		rightMaster.config_kI(0, kI, RobotMap.kTO);
-		rightMaster.config_kD(0, kD, RobotMap.kTO);
-		rightMaster.configClosedloopRamp(0.45, RobotMap.kTO);
+		rightMaster.configNominalOutputForward(0, Robot.map.kTO);
+		rightMaster.configNominalOutputReverse(0, Robot.map.kTO);
+		rightMaster.configPeakOutputForward(1, Robot.map.kTO);
+		rightMaster.configPeakOutputReverse(-1, Robot.map.kTO);
+		rightMaster.config_kF(0, kF, Robot.map.kTO);
+		rightMaster.config_kP(0, kP, Robot.map.kTO);
+		rightMaster.config_kI(0, kI, Robot.map.kTO);
+		rightMaster.config_kD(0, kD, Robot.map.kTO);
+		rightMaster.configClosedloopRamp(0.15, Robot.map.kTO);
 		
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		rightMaster.setNeutralMode(NeutralMode.Brake);
@@ -69,6 +68,9 @@ public class DriveTrain extends Subsystem {
 		rightSlave.follow(rightMaster);
 		
 		vikeDrive = new VikeDrive(leftMaster, rightMaster);
+		
+		leftMaster.setSelectedSensorPosition(0, 0, Robot.map.kTO);
+		rightMaster.setSelectedSensorPosition(0, 0, Robot.map.kTO);
 	}
 	
 	public void arcadeDrive(double power, double rotate) {
@@ -76,54 +78,26 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void velocityDrive(double power, double rotate) {
-		vikeDrive.arcadeDriveCL(power, rotate);
+		vikeDrive.arcadeDriveCL(-power, rotate);
+	}
+	
+	public boolean positionDrive(double positionL, double positionR) {
+		leftMaster.set(ControlMode.Position, -positionL);
+		rightMaster.set(ControlMode.Position, positionR);
+		
+		return (Math.abs((leftMaster.getClosedLoopError(0) + rightMaster.getClosedLoopError(0)) / 2) <= 200);
 	}
 
+	public boolean setAngle(double angle) {
+		arcadeDrive(0, (angle - Robot.navx.getGyro())/90);
+		return (angle - Robot.navx.getGyro() <= 5);
+	}
+	
+	public double getVelocity() {
+		return (leftMaster.getSelectedSensorVelocity(0) + rightMaster.getSelectedSensorVelocity(0)) / 2;
+	}
+	
     public void initDefaultCommand() {
         setDefaultCommand(new PlayerDrive());
     }
-
-	public String requestDiagnostic() {
-		System.out.println("\n----STARTING DRIVETRAIN DIAGNOSTIC----\n\n");
-		String report1 = "\nLeft Master\n", report2 = "\nLeft Slave\n", report3 = "\nRight Master\n", report4 = "\nRight Slave\n";
-		
-		System.out.println("Checking firmware versions...");
-		if (leftMaster.getFirmwareVersion() != 0x0303) report1 += "Firmware Out of Date!\n";
-		if (leftSlave.getFirmwareVersion() != 0x0303) report2 += "Firmware Out of Date!\n";
-		if (rightMaster.getFirmwareVersion() != 0x0303) report3 += "Firmware Out of Date!\n";
-		if (rightSlave.getFirmwareVersion() != 0x0303) report4 += "Firmware Out of Date!\n";
-		
-		leftSlave.set(ControlMode.PercentOutput, 0);
-		rightSlave.set(ControlMode.PercentOutput, 0);
-		
-		System.out.println("Testing left master motor...");
-		leftMaster.set(ControlMode.PercentOutput, 0.5);
-		Timer.delay(2);
-		if (Robot.pdp.portCurrent(RobotMap.leftMasterPWR)==0) report1 += "Not Powered!\n";
-		if (leftMaster.getSelectedSensorVelocity(0) == 0) report1 += "No Motion Detected!\n";
-		leftMaster.set(ControlMode.PercentOutput, 0);
-		
-		System.out.println("Testing right master motor...");
-		rightMaster.set(ControlMode.PercentOutput, 0.5);
-		Timer.delay(2);
-		if (Robot.pdp.portCurrent(RobotMap.rightMasterPWR)==0) report2 += "Not Powered!\n";
-		if (rightMaster.getSelectedSensorVelocity(0) == 0) report2 += "No Motion Detected!\n";
-		rightMaster.set(ControlMode.PercentOutput, 0);
-		
-		System.out.println("Testing left slave motor...");
-		leftSlave.set(ControlMode.PercentOutput, 0.5);
-		Timer.delay(2);
-		if (Robot.pdp.portCurrent(RobotMap.leftSlavePWR)==0) report3 += "Not Powered!\n";
-		if (leftMaster.getSelectedSensorVelocity(0) == 0) report3 += "No Motion Detected!\n";
-		leftSlave.set(ControlMode.PercentOutput, 0);
-		
-		System.out.println("Testing right slave motor...");
-		rightSlave.set(ControlMode.PercentOutput, 0.5);
-		Timer.delay(2);
-		if (Robot.pdp.portCurrent(RobotMap.rightSlavePWR)==0) report4 += "Not Powered!\n";
-		if (rightMaster.getSelectedSensorVelocity(0) == 0) report4 += "No Motion Detected!\n";
-		rightSlave.set(ControlMode.PercentOutput, 0);
-		
-		return report1+report2+report3+report4;
-	}
 }

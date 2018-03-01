@@ -2,15 +2,19 @@ package org.usfirst.frc.team4206.robot.commands;
 
 import org.usfirst.frc.team4206.robot.Robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class CloseGrabber extends Command {
+public class RunGrabber extends Command {
 
-    public CloseGrabber() {
+	private double _speed;
+	
+    public RunGrabber(double speed) {
         requires(Robot.shooterfeeder);
+        _speed = speed;
     }
 
     // Called just before this Command runs the first time
@@ -19,20 +23,18 @@ public class CloseGrabber extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooterfeeder.closeGrabber();
+    	System.out.println("command");
+    	Robot.shooterfeeder.controlGrabber(_speed * 0.5);
+    	Timer.delay(0.005);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.shooterfeeder.grabberTripped();
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
+    	Robot.shooterfeeder.controlGrabber(0);
     }
 }
