@@ -23,7 +23,7 @@ public class RunGrabber extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println("command");
+    	//System.out.println("command");
     	Robot.shooterfeeder.controlGrabber(_speed * 0.5);
     	Timer.delay(0.005);
     }
