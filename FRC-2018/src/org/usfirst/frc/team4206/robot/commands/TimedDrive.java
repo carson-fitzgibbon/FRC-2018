@@ -28,7 +28,8 @@ public class TimedDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.velocityDrive(pwr, -Robot.navx.getGyro()/90);
+    	//Robot.drivetrain.velocityDrive(pwr, -Robot.navx.getGyro()/90);
+    	Robot.drivetrain.velocityDrive(pwr, 0);
     	Timer.delay(0.005);
     }
 

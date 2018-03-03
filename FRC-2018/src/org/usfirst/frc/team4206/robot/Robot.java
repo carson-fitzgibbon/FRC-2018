@@ -34,10 +34,10 @@ import org.usfirst.frc.team4206.robot.subsystems.ShooterFeeder;
 public class Robot extends TimedRobot {
 	public static RobotMap map = new RobotMap();
 	public static final DriveTrain drivetrain = new DriveTrain();
-	//public static final Shifter shifter = new Shifter();
+	public static final Shifter shifter = new Shifter();
 	public static LimelightVision limelightvision;// = new LimelightVision();
 	public static final NavigationSensor navx = new NavigationSensor();
-	//public static final PDP pdp = new PDP();
+	public static final PDP pdp = new PDP();
 	public static final ShooterFeeder shooterfeeder = new ShooterFeeder();
 	public static OI oi;
 
@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		navx.zeroGyro();
+		//navx.zeroGyro();
 		autonomousCommand = chooser.getSelected();
 		autonomousCommand.start();
 	}
