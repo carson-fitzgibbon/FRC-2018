@@ -15,7 +15,7 @@ public class LeftAuto extends Command {
     public LeftAuto() {
         requires(Robot.drivetrain);
         requires(Robot.shooterfeeder);
-        requires(Robot.navx);
+        //requires(Robot.navx);
     }
 
     String plateConfig = "";

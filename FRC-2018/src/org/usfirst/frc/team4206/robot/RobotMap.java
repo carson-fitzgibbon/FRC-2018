@@ -15,7 +15,7 @@ package org.usfirst.frc.team4206.robot;
  */
 public class RobotMap {
 	private final boolean isPractice = true;
-	public final int kTO = 100;
+	public final int kTO = 10;
 	
 	public int leftMaster;
 	public int leftSlave;

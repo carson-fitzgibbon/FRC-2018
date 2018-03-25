@@ -15,7 +15,7 @@ public class RightAuto extends Command {
     public RightAuto() {
         requires(Robot.drivetrain);
         requires(Robot.shooterfeeder);
-        requires(Robot.navx);
+        //requires(Robot.navx);
     }
 
     String plateConfig = "";

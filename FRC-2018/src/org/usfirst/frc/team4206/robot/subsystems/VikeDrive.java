@@ -16,7 +16,7 @@ public class VikeDrive extends DifferentialDrive {
 	private WPI_TalonSRX _rightMotor;
 
 	public VikeDrive(WPI_TalonSRX leftMotor, WPI_TalonSRX rightMotor) {
-		super(rightMotor, rightMotor);
+		super(leftMotor, rightMotor);
 		_leftMotor = leftMotor;
 	    _rightMotor = rightMotor;
 	    addChild(_leftMotor);

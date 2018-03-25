@@ -78,13 +78,10 @@ public class ShooterFeeder extends Subsystem {
     
     public void controlGrabber(double speed) {
     	//grabber.set(ControlMode.Position, grabberOpen);
-    	System.out.println(speed);
     	grabber.set(speed);
     }
     
     public void setAngularVelocity(double left, double right) {
-    	System.out.println(left);
-
     	shooterLeft.set(left);
     	shooterRight.set(right);
     }

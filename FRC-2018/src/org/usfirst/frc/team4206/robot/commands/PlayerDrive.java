@@ -21,8 +21,8 @@ public class PlayerDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.drivetrain.arcadeDrive(OI.driver.getRawAxis(OI.leftY), OI.driver.getRawAxis(OI.rightX));
     	//Robot.drivetrain.arcadeDrive(OI.driver.getRawAxis(OI.leftY), OI.driver.getRawAxis(OI.rightX));
-    	Robot.drivetrain.velocityDrive(OI.driver.getRawAxis(OI.leftY), OI.driver.getRawAxis(OI.rightX));
     	Timer.delay(0.005);
 	}
     // Make this return true when this Command no longer needs to run execute()

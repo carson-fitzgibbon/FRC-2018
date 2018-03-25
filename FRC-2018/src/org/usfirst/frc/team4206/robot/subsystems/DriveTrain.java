@@ -29,22 +29,24 @@ public class DriveTrain extends Subsystem {
 	
 	public DriveTrain() {
 		leftMaster = new WPI_TalonSRX(Robot.map.leftMaster);
-		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
-		leftMaster.setSensorPhase(true);
+		//leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
+		//leftMaster.setSensorPhase(true);
 		leftSlave = new WPI_TalonSRX(Robot.map.leftSlave);
 		rightMaster = new WPI_TalonSRX(Robot.map.rightMaster);
-		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
-		rightMaster.setSensorPhase(true);
+		//rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.map.kTO);
+		//rightMaster.setSensorPhase(true);
 		rightSlave = new WPI_TalonSRX(Robot.map.rightSlave);
-		
+		/*
 		leftMaster.configNominalOutputForward(0, Robot.map.kTO);
 		leftMaster.configNominalOutputReverse(0, Robot.map.kTO);
 		leftMaster.configPeakOutputForward(1, Robot.map.kTO);
 		leftMaster.configPeakOutputReverse(-1, Robot.map.kTO);
+		leftMaster.configOpenloopRamp(0.15, Robot.map.kTO);
 		leftMaster.config_kF(0, kF, Robot.map.kTO);
 		leftMaster.config_kP(0, kP, Robot.map.kTO);
 		leftMaster.config_kI(0, kI, Robot.map.kTO);
 		leftMaster.config_kD(0, kD, Robot.map.kTO);
+		leftMaster.setSensorPhase(true);
 		leftMaster.configClosedloopRamp(0.15, Robot.map.kTO);
 		
 		rightMaster.configNominalOutputForward(0, Robot.map.kTO);
@@ -54,27 +56,32 @@ public class DriveTrain extends Subsystem {
 		rightMaster.config_kF(0, kF, Robot.map.kTO);
 		rightMaster.config_kP(0, kP, Robot.map.kTO);
 		rightMaster.config_kI(0, kI, Robot.map.kTO);
-		rightMaster.config_kD(0, kD, Robot.map.kTO);
-		rightMaster.configClosedloopRamp(0.15, Robot.map.kTO);
+		rightMaster.config_kD(0, kD, Robot.map.kTO);*/
+		//rightMaster.setSensorPhase(true);
+		//rightMaster.configClosedloopRamp(0.15, Robot.map.kTO);
 		
 		leftMaster.setNeutralMode(NeutralMode.Brake);
+		leftMaster.configOpenloopRamp(.4, Robot.map.kTO);
 		rightMaster.setNeutralMode(NeutralMode.Brake);
+		rightMaster.configOpenloopRamp(.4, Robot.map.kTO);
 		leftSlave.setNeutralMode(NeutralMode.Brake);
 		rightSlave.setNeutralMode(NeutralMode.Brake);
 		
-		leftMaster.set(ControlMode.Velocity, 0);
-		rightMaster.set(ControlMode.Velocity, 0);
+		//leftMaster.set(ControlMode.Velocity, 0);
+		//rightMaster.set(ControlMode.Velocity, 0);
 		leftSlave.follow(leftMaster);
 		rightSlave.follow(rightMaster);
 		
 		vikeDrive = new VikeDrive(leftMaster, rightMaster);
+		vikeDrive.setExpiration(0.1);
+		vikeDrive.setSafetyEnabled(true);
 		
-		leftMaster.setSelectedSensorPosition(0, 0, Robot.map.kTO);
-		rightMaster.setSelectedSensorPosition(0, 0, Robot.map.kTO);
+		//leftMaster.setSelectedSensorPosition(0, 0, Robot.map.kTO);
+		//rightMaster.setSelectedSensorPosition(0, 0, Robot.map.kTO);
 	}
 	
 	public void arcadeDrive(double power, double rotate) {
-		vikeDrive.arcadeDrive(power, rotate);
+		vikeDrive.arcadeDrive(-power, rotate);
 	}
 	
 	public void velocityDrive(double power, double rotate) {
@@ -89,8 +96,9 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public boolean setAngle(double angle) {
-		arcadeDrive(0, (angle - Robot.navx.getGyro())/90);
-		return (angle - Robot.navx.getGyro() <= 5);
+		//arcadeDrive(0, (angle - Robot.navx.getGyro())/90);
+		//return (angle - Robot.navx.getGyro() <= 5);
+		return false;
 	}
 	
 	public double getVelocity() {

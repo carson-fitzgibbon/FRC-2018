@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team4206.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -36,12 +37,12 @@ public class Robot extends TimedRobot {
 	public static final DriveTrain drivetrain = new DriveTrain();
 	//public static final Shifter shifter = new Shifter();
 	public static LimelightVision limelightvision;// = new LimelightVision();
-	public static final NavigationSensor navx = new NavigationSensor();
+	//public static final NavigationSensor navx = new NavigationSensor();
 	//public static final PDP pdp = new PDP();
 	public static final ShooterFeeder shooterfeeder = new ShooterFeeder();
 	public static OI oi;
 
-	Command autonomousCommand = new TimedDrive(3, .5); // default autonomous will cross the baseline
+	Command autonomousCommand = new TimedDrive(2.75, .65); // default autonomous will cross the baseline
 	
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
@@ -52,10 +53,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
+		/*
 		chooser.addDefault("Baseline", new TimedDrive(3, 0.5));
 		chooser.addObject("Left", new LeftAuto());
 		chooser.addObject("Right", new RightAuto());
 		chooser.addObject("Center", new CenterAuto());
+		*/
+		//CameraServer.getInstance().startAutomaticCapture();
 	}
 
 	/**
@@ -86,8 +90,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		navx.zeroGyro();
-		autonomousCommand = chooser.getSelected();
+		//navx.zeroGyro();
+		//autonomousCommand = chooser.getSelected();
 		autonomousCommand.start();
 	}
 

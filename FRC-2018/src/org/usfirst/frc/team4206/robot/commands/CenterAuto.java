@@ -14,7 +14,7 @@ public class CenterAuto extends Command {
     public CenterAuto() {
         requires(Robot.drivetrain);
         requires(Robot.shooterfeeder);
-        requires(Robot.navx);
+        //requires(Robot.navx);
     }
 
     String plateConfig = "";
@@ -33,16 +33,16 @@ public class CenterAuto extends Command {
     	if (plateConfig.charAt(0) == 'L') {
     		// do left switch
     		if (System.currentTimeMillis() < startTime + 2000) {
-    			Robot.drivetrain.velocityDrive(.5, (-35-Robot.navx.getGyro())/35); // try this in position mode
+    			//Robot.drivetrain.velocityDrive(.5, (-35-Robot.navx.getGyro())/35); // try this in position mode
     		} else {
-    			Robot.drivetrain.setAngle(-35);
+    			//Robot.drivetrain.setAngle(-35);
     			Robot.shooterfeeder.setAngularVelocity(0.5, 0.5);
     	    	Robot.shooterfeeder.setIntake(1);
     		}
     	} else if (plateConfig.charAt(0) == 'R'){
     		// do switch
     		if (System.currentTimeMillis() < startTime + 2000) {
-    			Robot.drivetrain.velocityDrive(.5, (35-Robot.navx.getGyro())/35); // try this in position mode
+    			//Robot.drivetrain.velocityDrive(.5, (35-Robot.navx.getGyro())/35); // try this in position mode
     		} else {
     			Robot.drivetrain.setAngle(35);
     			Robot.shooterfeeder.setAngularVelocity(0.5, 0.5);
